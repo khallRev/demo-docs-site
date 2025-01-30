@@ -1,0 +1,16 @@
+title: "My Documentation Site"
+description: "A site for PSA, Billing, Architecture docs and more"
+theme: jekyll-theme-cayman
+
+# Configure the top navigation (if theme supports it)
+navigation:
+  - title: "Home"
+    url: "/"
+  - title: "PSA"
+    url: "/psa/"
+  - title: "Billing"
+    url: "/billing/"
+  - title: "Architecture"
+    url: "/architecture/"
+  - title: "Blog"
+    url: "/blog"
