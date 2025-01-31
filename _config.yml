@@ -1,8 +1,9 @@
 title: "My Documentation Site"
 description: "A site for PSA, Billing, Architecture docs and more"
 theme: jekyll-theme-cayman
+url: "https://khallrev.github.io"       
+baseurl: "/demo-docs-site" 
 
-# Configure the top navigation (if theme supports it)
 navigation:
   - title: "Home"
     url: "/"
