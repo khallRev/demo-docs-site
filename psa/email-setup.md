@@ -1,70 +1,62 @@
 ---
-title: "PSA Web Messaging Services Configuration"
+title: "Inbound & Outbound Email Configuration"
 layout: default
 ---
 
-# PSA Web ‐ Configuring Messaging Services
- 
-marcbarbierrev edited this page last week · 9 revisions
-Overview
-Messaging in PSA consists of both outbound and inbound messaging. This document covers how to configure all of the relevant services for both inbound and outbound messaging.
+# Inbound & Outbound Email Configuration
 
-Note: Currently (as of January 2025) only Email is supported as a messaging type, with plans to later enable other types of messaging.
+Learn how to configure and manage email settings in our PSA system for streamlined communication with clients. Proper email configuration ensures tickets, tasks, and notifications are automatically routed and tracked.
 
-Outbound Messaging
-Outbound messaging for PSA is facilitated by an API called the "messaging-service". This service is provider agnostic, but currently uses a common Sendgrid account for all outbound emails. Data flow from the front end all the way to SendGrid follows the following diagram:
+## Table of Contents
+1. [Overview](#overview)
+2. [Outbound Email Setup](#outbound-email-setup)
+3. [Inbound Email Setup](#inbound-email-setup)
+4. [Testing & Validation](#testing--validation)
+5. [Common Issues & FAQs](#common-issues--faqs)
 
-![alt text](image.png)
+---
 
-Configurations
-PSA API Database (In progress)
-(Current State) Only one from email address can be configure per environment. There is currently work-in-progress to make this configurable per client.
+## Overview
 
-(Future state) The client needs to go into the Admin->Email Settings panel and populate their Outgoing Email Address.
+Our PSA platform integrates with external email systems to automate:
+- **Outbound**: Notifications to clients about newly opened tickets, project updates, or invoices.
+- **Inbound**: Emails from clients auto-converted into tickets, assigned to the proper queue or project.
 
-SendGrid
-SendGrid needs to be configured to have an additional "From" address matching the client's desired from address. Until this is automated via API calls this should be completed via a CA ticket.
+## Outbound Email Setup
 
-Client DNS Settings
-When the client configures a "From" Email, they will receive an automated email from PSA with instructions for configuring the DNS settings of their client-managed email inbox.
+1. **SMTP Settings**: Go to **Admin** > **Email Settings** > **Outbound**.  
+2. Enter your **SMTP server** hostname (e.g., `smtp.example.com`), port (e.g., `587`), and **credentials** (username and password).  
+3. **Secure Connection**: Choose **TLS** or **SSL** if required by your mail server.  
+4. **Test Connection**: Click **Send Test Email** to confirm everything is working.  
+5. (Optional) **Default Templates**: Adjust the email templates the PSA uses for welcome messages, invoice reminders, or project updates.
 
-Inbound Messaging
-Inbound Messaging for PSA is facilitated by the Inbound-Messaging Microservice. This service polls mailboxes periodically to retrieve new emails, processes them, and then creates an event to notify subscribing services that a new email has been retrieved.
+## Inbound Email Setup
 
-Data flow follows the following diagram: image
+1. **Email Parser**: In **Admin** > **Email Settings** > **Inbound**, enable the email parsing feature.  
+2. **Mailbox Address**: Provide the mailbox the PSA should poll (e.g., `support@yourcompany.com`).  
+3. **Credentials**: Enter the IMAP/POP3 details, including server address (e.g., `imap.example.com`), port, username, and password.  
+4. **Automatic Ticket Creation**: Turn on the toggle to create tickets from inbound messages.  
+5. **Auto-Assignment Rules**:
+   - **Sender Domain**: Emails from a recognized client domain might route to the client’s existing project.  
+   - **Subject Tags**: If the subject contains `[Billing]`, route to the Billing queue.
 
-Rev.io Managed Inbox
-A CA ticket should be created to spin up a new Rev.io managed inbox that the client will forward their emails to. After the inbox has been created, the Inbound Messaging Service Principal should be added to the inbox with the correct permissions. Someone with the proper access to the inbox should run the following script
+## Testing & Validation
 
-New-ServicePrincipal -AppId "<app-id of service principal>" -ObjectId "<object-id of service principal>"
- 
-Add-MailboxPermission -Identity "client1_dev@psarev.io" -User "<app-id of service principal>" -AccessRights FullAccess
-Replace the Identity with the appropriate email address.
+1. **Send a Test Email**: From a client email address, send a message to the configured mailbox (e.g., `support@yourcompany.com`).  
+2. **Check PSA**: Confirm a new ticket or message was created under the correct client/project.  
+3. **Outbound Reply**: Respond within the PSA and verify the client receives the email.
 
-Registering Inbox
-The newly created inbox should then be registered with the Inbound Messaging Service. Currently this can only be done through Postman using the following call to the inbound messaging service.
+## Common Issues & FAQs
 
-Note: The Tenant ID, ClientID, and SecretKey of the service principal can be found in Azure Key Vault (dev-psa-web-kv-2644) under the following secret names:
+- **Authentication Errors**: Double-check credentials and ports. Some mail servers require an App Password or 2FA.  
+- **Firewall Blockages**: Ensure your PSA’s IP can communicate with the mail server.  
+- **Emails Not Converting to Tickets**: Confirm the email parsing rules (domain, subject tags, etc.) are correct.  
+- **Spam Filters**: Outbound emails might get flagged if DNS entries (SPF, DKIM) aren’t set up for your domain.
 
-dev-psarevio-inbound-emails-tennant-id dev-psarevio-inbound-emails-client-id dev-psarevio-inbound-emails-client-secret
-```
-URL:
-{Base URL}/inbox/subscribe
+---
 
-Method: POST
+### Need More Help?
 
-Body:
-{
-    "emailAddress": "client1_dev@psarev.io",  // Name of the Rev.io Managed inbox          
-    "provider": "Office365", // Should not change
-    "authenticationType": "AppRegistration", // Should not change
-    "credentials": {
-        "clientId": "<ClientId of the service principal>",
-        "clientSecret": "<SecretKey of the service principal>",
-        "tenantId": "<Azure tenant ID)"
-    },
-    "clientCode": "DEV", // From Billing
-    "billProfileId": "1001", // From Billing. Can be an empty string
-    "stateKey": "1" // Should be set to 1 for a new instance
-}
-```
+- Consult your **mail server admin** for port or security protocol questions.  
+- Check our [New Client Setup](./new-client-setup.md) guide for end-to-end onboarding steps.  
+- For advanced email template customization, reach out to your PSA administrator or see the official documentation.
