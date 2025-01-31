@@ -1,8 +1,8 @@
 ---
 layout: post
-title: "Welcome to Our New Blog"
+title: "Cool Stuff!!!!"
 date: 2025-01-30
 ---
-# First Blog Post
+# Second Blog Post
 
 Here we share updates, tips, and important news about our system!
