@@ -7,6 +7,11 @@ layout: default
 
 Welcome to the PSA (Professional Services Automation) documentation. This section provides guidelines and references for implementing, configuring, and managing our PSA tools and processes.
 
+## Additional Pages
+- [New Client Setup](./new-client-setup.md)
+- [Inbound & Outbound Email Configuration](./inbound-outbound-email.md)
+
+
 ## Contents
 1. [Overview](#overview)
 2. [Standard Operating Procedures](#standard-operating-procedures)
