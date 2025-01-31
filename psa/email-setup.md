@@ -47,7 +47,7 @@ The newly created inbox should then be registered with the Inbound Messaging Ser
 Note: The Tenant ID, ClientID, and SecretKey of the service principal can be found in Azure Key Vault (dev-psa-web-kv-2644) under the following secret names:
 
 dev-psarevio-inbound-emails-tennant-id dev-psarevio-inbound-emails-client-id dev-psarevio-inbound-emails-client-secret
-
+```
 URL:
 {Base URL}/inbox/subscribe
 
@@ -67,3 +67,4 @@ Body:
     "billProfileId": "1001", // From Billing. Can be an empty string
     "stateKey": "1" // Should be set to 1 for a new instance
 }
+```

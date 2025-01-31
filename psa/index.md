@@ -9,7 +9,7 @@ Welcome to the PSA (Professional Services Automation) documentation. This sectio
 
 ## Additional Pages
 - [New Client Setup](./new-client-setup.md)
-- [Inbound & Outbound Email Configuration](./inbound-outbound-email.md)
+- [Inbound & Outbound Email Configuration](./email-setup.md)
 
 
 ## Contents
