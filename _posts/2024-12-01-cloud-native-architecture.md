@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Adopting a Cloud-Native Architecture for Scalability and Resilience"
-date: 2025-03-01
+date: 2024-12-01
 ---
 
 # Adopting a Cloud-Native Architecture for Scalability and Resilience
